@@ -23,6 +23,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"runtime/debug"
 
 	pb "cloud.google.com/go/spanner/apiv1/spannerpb"
 	flags "github.com/jessevdk/go-flags"
@@ -52,6 +53,10 @@ type spannerOptions struct {
 }
 
 func main() {
+	bi, ok := debug.ReadBuildInfo()
+	if ok {
+		panic(bi.Main.Version)
+	}
 	var gopts globalOptions
 	// process config files at first
 	if err := readConfigFile(flags.NewParser(&gopts, flags.Default)); err != nil {
